@@ -23,31 +23,48 @@ function playRound(computerSelection, playerSelection) {
 
 };
 
-function game() {
 
-    while (playerScore < 5 && computerScore < 5) {
+function handleMove(selection) {
+    const computerSelection = getComputerChoice();
+    playRound(computerSelection, selection);
+    console.log(roundWinner);
+    if (roundWinner == "Nobody") {
+        resultsDiv.innerHTML = "It's a tie!"
+    } 
+    if (roundWinner == "Player") {
+        playerScore += 1
+        playerScoreP.innerHTML = playerScore
+        resultsDiv.innerHTML = "You won that round!"
+    } else if (roundWinner == "CPU") {
+        computerScore += 1
+        computerScoreP.innerHTML = computerScore
+        resultsDiv.innerHTML = "You lost that one!"
+    }
 
-        const playerSelection = prompt("Your Selection (Rock, Paper, or Scissors)").toLowerCase();
-        const computerSelection = getComputerChoice()
+    if (playerScore == 5) {
+        resultsDiv.innerHTML = "You won the game!"
+        playerScore = 0
+        computerScore = 0
+        playerScoreP.innerHTML = playerScore
+        computerScoreP.innerHTML = computerScore
+    } else if (computerScore == 5) {
+        resultsDiv.innerHTML = "You lost the game"
+        playerScore = 0
+        computerScore = 0
+        playerScoreP.innerHTML = playerScore
+        computerScoreP.innerHTML = computerScore
+    }
 
-        console.log(playRound(getComputerChoice(), playerSelection));
-        switch (roundWinner) {
+}
 
-            case "Player":
-                playerScore++
-                break;
 
-            case "CPU":
-                computerScore++
-                break;
-        };
-    };
-
-    if (playerScore > computerScore) {
-        return "You Won The Game!"
-    } else {
-        return "You Suck!"
-    };
-};
-
-console.log(game());
+const gameBtns = document.querySelectorAll("button")
+const playerScoreP = document.querySelector(".player-score")
+const computerScoreP = document.querySelector(".cpu-score")
+const resultsDiv = document.querySelector(".results")
+const scissorsBtn = document.querySelector("#scissors")
+scissorsBtn.addEventListener("click", () => handleMove("scissors"))
+const rockBtn = document.querySelector("#rock")
+rockBtn.addEventListener("click", () => handleMove("rock"))
+const paperBtn = document.querySelector("#paper")
+paperBtn.addEventListener("click", () => handleMove("paper"))
